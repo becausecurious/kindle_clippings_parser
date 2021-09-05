@@ -7,13 +7,13 @@ function readFile(path) {
 }
 
 test('parse shouldn\'t fail on English', () => {
-    let data = readFile('test_data/My Clippings.txt')
+    let data = readFile('samples/My Clippings.txt')
 
     parse(data)
 });
 
 test('parse shouldn\'t fail on German', () => {
-    let data = readFile('test_data/Meine Clippings.txt')
+    let data = readFile('samples/Meine Clippings.txt')
 
     parse(data)
 });
