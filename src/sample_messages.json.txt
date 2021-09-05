@@ -1,0 +1,114 @@
+{
+    "userId": "usernameA",
+    "exportDate": "2021-09-02T07:13",
+    "conversations": [
+        {
+            "id": "19:8e1d8cc7734e64e@thread.skype",
+            "displayName": "usernameC, usernameA, usernameB",
+            "version": 1630565395968.0,
+            "properties": {
+                "conversationblocked": false,
+                "lastimreceivedtime": "2021-09-02T04:48:50.552Z",
+                "consumptionhorizon": "1630565395224;1630565395431;7691867803184011196",
+                "conversationstatus": null
+            },
+            "threadProperties": {
+                "membercount": 3,
+                "members": "[\"8:usernameC\",\"usernameA\",\"8:usernameB\"]",
+                "topic": "usernameC, usernameA, usernameB"
+            },
+            "MessageList": [
+                {
+                    "id": "1630565395224",
+                    "displayName": null,
+                    "originalarrivaltime": "2021-09-02T06:49:55.104Z",
+                    "messagetype": "RichText",
+                    "version": 1630565395224.0,
+                    "content": "How is it going?",
+                    "conversationid": "19:8e1d8cc7734e64e@thread.skype",
+                    "from": "usernameA",
+                    "properties": null,
+                    "amsreferences": null
+                },
+                {
+                    "id": "1630558130549",
+                    "displayName": "usernameC",
+                    "originalarrivaltime": "2021-09-02T04:48:50.552Z",
+                    "messagetype": "RichText",
+                    "version": 1630558130549.0,
+                    "content": "Hey",
+                    "conversationid": "19:8e1d8cc7734e64e@thread.skype",
+                    "from": "8:usernameC",
+                    "properties": null,
+                    "amsreferences": null
+                },
+                {
+                    "id": "1630520973935",
+                    "displayName": "usernameB",
+                    "originalarrivaltime": "2021-09-01T18:29:33.92Z",
+                    "messagetype": "RichText",
+                    "version": 1630520973935.0,
+                    "content": "Hello",
+                    "conversationid": "19:8e1d8cc7734e64e@thread.skype",
+                    "from": "8:usernameB",
+                    "properties": null,
+                    "amsreferences": null
+                }
+            ]
+        },
+        {
+            "id": "19:8b418c6c@thread.skype",
+            "displayName": "some chat title",
+            "version": 1630565395968.0,
+            "properties": {
+                "conversationblocked": false,
+                "lastimreceivedtime": "2021-09-02T04:48:50.552Z",
+                "consumptionhorizon": "1630565395431;7691867803184011196",
+                "conversationstatus": null
+            },
+            "threadProperties": {
+                "membercount": 2,
+                "members": "[\"usernameA\",\"8:usernameB\"]",
+                "topic": "some chat title"
+            },
+            "MessageList": [
+                {
+                    "id": "1630565395224",
+                    "displayName": null,
+                    "originalarrivaltime": "2021-09-02T06:50:55.104Z",
+                    "messagetype": "RichText",
+                    "version": 1630565395224.0,
+                    "content": "shorter message;",
+                    "conversationid": "19:8b418c6c@thread.skype",
+                    "from": "usernameA",
+                    "properties": null,
+                    "amsreferences": null
+                },
+                {
+                    "id": "1630565395224",
+                    "displayName": null,
+                    "originalarrivaltime": "2021-09-02T06:49:55.104Z",
+                    "messagetype": "RichText",
+                    "version": 1630565395224.0,
+                    "content": "this is a very long message just for test; this is a very long message just for test; this is a very long message just for test; this is a very long message just for test;",
+                    "conversationid": "19:8b418c6c@thread.skype",
+                    "from": "usernameA",
+                    "properties": null,
+                    "amsreferences": null
+                },
+                {
+                    "id": "1630565395224",
+                    "displayName": null,
+                    "originalarrivaltime": "2021-09-02T06:48:55.104Z",
+                    "messagetype": "RichText",
+                    "version": 1630565395224.0,
+                    "content": "shorter message;",
+                    "conversationid": "19:8b418c6c@thread.skype",
+                    "from": "usernameA",
+                    "properties": null,
+                    "amsreferences": null
+                }
+            ]
+        }
+    ]
+}
