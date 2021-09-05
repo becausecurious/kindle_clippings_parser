@@ -56,20 +56,21 @@ function splitIntoNoteLineBlocks(clippingsTxt) {
     return blocks
 }
 
-const FIRST_NOTE_LINE_REGEXP = new RegExp(
-    /(?<title>.*) \((?<author>.*)\)/);
-
-const SECOND_EN_NOTE_LINE_REGEXP = new RegExp(
-    /- ([Ll]ocation|Highlight Loc\.) (?<location_start>\d+)(-(?<location_end>\d+))? +\| +Added on (?<date>.*)/);
-
-const SECOND_DE_NOTE_LINE_REGEXP = new RegExp(
-    /- (Markierung Pos. (?<location_start>\d+)(-(?<location_end>\d+))?)?((Markierung auf Seite (?<page>\d+) \| )?(Notiz )?Pos. (?<position>\d+))? +\| +Hinzugefügt am (?<date>.*)/);
-
 
 export const parseNoteLineBlock = (noteLines) => {
+    const FIRST_NOTE_LINE_REGEXP = /(?<title>.*) \((?<author>.*)\)/
+
     let groups = noteLines[0].match(FIRST_NOTE_LINE_REGEXP).groups
     const title = groups.title
     const author = groups.author
+
+
+    const SECOND_EN_NOTE_LINE_REGEXP =
+        /- ([Ll]ocation|Highlight Loc\.) (?<location_start>\d+)(-(?<location_end>\d+))? +\| +Added on (?<date>.*)/
+
+    const SECOND_DE_NOTE_LINE_REGEXP =
+        /- (Markierung Pos. (?<location_start>\d+)(-(?<location_end>\d+))?)?((Markierung auf Seite (?<page>\d+) \| )?(Notiz )?Pos. (?<position>\d+))? +\| +Hinzugefügt am (?<date>.*)/
+
 
     let match = noteLines[1].match(SECOND_EN_NOTE_LINE_REGEXP)
 

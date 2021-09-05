@@ -7,3 +7,5 @@ rm -r ~/projects/becausecurious/website/because_curious/main/static/main/importe
 
 # https://askubuntu.com/a/86891
 cp -a ./build/.  ~/projects/becausecurious/website/because_curious/main/static/main/imported/kindle_notes_parser/
+
+cp -a ./build/index.html  ~/projects/becausecurious/website/because_curious/main/templates/main/imported/kindle_notes_parser/

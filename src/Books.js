@@ -26,7 +26,6 @@ export class Books extends React.Component {
 
 
     render() {
-        console.log(this.props.books)
         return (
             <div>
                 <div className="mt-5 is-flex is-justify-content-center is-align-items-center">
