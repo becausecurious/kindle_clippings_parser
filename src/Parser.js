@@ -79,7 +79,7 @@ export const parseNoteLineBlock = (noteLines) => {
     }
 
     if (match === null) {
-        throw ([noteLines[1], noteLines])
+        throw `Can't parse line '${noteLines[1]}' of block '${noteLines.join("\n")}'`
     }
     groups = match.groups
 
