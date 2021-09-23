@@ -122,7 +122,7 @@ function Note(props) {
                             <NotePosition note={props.note} />
                         </span>
                     }
-                    {props.showTime &&
+                    {props.showTime && props.note?.date &&
                         <span className="ml-2">
                             {timeToString(props.note?.date)}
                         </span>
@@ -166,7 +166,7 @@ function NotePosition(props) {
 
 function TxtNote(note, showTime, showPosition) {
     var time_block = ""
-    if (showTime) {
+    if (showTime && note.date) {
         time_block = `${timeToString(note.date)}`
     }
 

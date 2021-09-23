@@ -56,53 +56,125 @@ function splitIntoNoteLineBlocks(clippingsTxt) {
     return blocks
 }
 
+const parseEnglishDateToken = (token) => {
+    const REGEXP = /Added on (?<date>.*)/
+    let match = token.match(REGEXP)
+    if (match === null) {
+        return {}
+    }
+    let raw_date = match.groups.date
+    let date = dayjs(raw_date)
+
+    if (date.isValid()) {
+        return { date: date }
+    }
+    return {}
+}
+
+const parseGermanDateToken = (token) => {
+    const REGEXP = /Hinzugefügt am (?<date>.*)/
+    let match = token.match(REGEXP)
+    if (match === null) {
+        return {}
+    }
+    let raw_date = match.groups.date
+    let date = parseGermanDate(raw_date)
+
+    if (date.isValid()) {
+        return { date: date }
+    }
+    return {}
+}
+
+export const parseEnglishLocationToken = (token) => {
+    const REGEXP = /([Ll]ocation|Highlight Loc\.) (?<location_start>\d+)(-(?<location_end>\d+))?/
+    let match = token.match(REGEXP)
+    if (match === null) {
+        return {}
+    }
+    let result = { location_start: match.groups.location_start }
+    if (match.groups.location_end) {
+        result.location_end = match.groups.location_end
+    }
+    return result
+}
+
+export const parseGermanLocationToken = (token) => {
+    const REGEXP = /Markierung Pos. (?<location_start>\d+)(-(?<location_end>\d+))?/
+    let match = token.match(REGEXP)
+    if (match === null) {
+        return {}
+    }
+    let result = { location_start: match.groups.location_start }
+    if (match.groups.location_end) {
+        result.location_end = match.groups.location_end
+    }
+    return result
+}
+
+export const parseGermanPageToken = (token) => {
+    const REGEXP = /Markierung auf Seite (?<page>\d+)/
+    let match = token.match(REGEXP)
+    if (match === null) {
+        return {}
+    }
+    return { page: match.groups.page }
+}
+
+export const parseGermanPositionToken = (token) => {
+    const REGEXP = /(Notiz )?Pos. (?<position>\d+)/
+    let match = token.match(REGEXP)
+    if (match === null) {
+        return {}
+    }
+    return { position: match.groups.position }
+}
+
+let METADATA_TOKEN_PARSERS = [
+    parseEnglishDateToken,
+    parseGermanDateToken,
+    parseEnglishLocationToken,
+    parseGermanLocationToken,
+    parseGermanPageToken,
+    parseGermanPositionToken,
+]
+
+export const parseMetadataLine = (line) => {
+    // sample line:
+    // - Markierung Pos. 9339-41  | Hinzugefügt am Donnerstag, 1. Juli 2021 4.45 Uhr GMT+07:29
+    if (line.length > 0 && line[0]) {
+        line = line.slice(1)
+    }
+
+    var tokens = line.split("|")
+
+    var result = {}
+
+    tokens.forEach(token => {
+        METADATA_TOKEN_PARSERS.forEach(parser => {
+            result = mergeDicts(result, parser(token.trim()))
+        })
+    });
+
+    return result
+}
+
+const mergeDicts = (a, b) => {
+    return Object.assign({}, a, b)
+}
 
 export const parseNoteLineBlock = (noteLines) => {
+    var parsed = {}
+
     const FIRST_NOTE_LINE_REGEXP = /(?<title>.*) \((?<author>.*)\)/
 
     let groups = noteLines[0].match(FIRST_NOTE_LINE_REGEXP).groups
-    const title = groups.title
-    const author = groups.author
+    parsed.title = groups.title
+    parsed.author = groups.author
 
+    parsed = mergeDicts(parsed, parseMetadataLine(noteLines[1]))
 
-    const SECOND_EN_NOTE_LINE_REGEXP =
-        /- ([Ll]ocation|Highlight Loc\.) (?<location_start>\d+)(-(?<location_end>\d+))? +\| +Added on (?<date>.*)/
-
-    const SECOND_DE_NOTE_LINE_REGEXP =
-        /- (Markierung Pos. (?<location_start>\d+)(-(?<location_end>\d+))?)?((Markierung auf Seite (?<page>\d+) \| )?(Notiz )?Pos. (?<position>\d+))? +\| +Hinzugefügt am (?<date>.*)/
-
-
-    let match = noteLines[1].match(SECOND_EN_NOTE_LINE_REGEXP)
-
-    if (match === null) {
-        match = noteLines[1].match(SECOND_DE_NOTE_LINE_REGEXP)
-    }
-
-    if (match === null) {
-        throw `Can't parse line '${noteLines[1]}' of block '${noteLines.join("\n")}'`
-    }
-    groups = match.groups
-
-    const location_start = groups.location_start
-    const location_end = groups.location_end
-    let date = dayjs(groups.date)
-
-    if (!date.isValid()) {
-        date = parseGermanDate(groups.date)
-    }
-
-    const text = noteLines.slice(3).join('\n')
-
-    const parsed = {
-        title: title,
-        author: author,
-        location_start: location_start,
-        location_end: location_end,
-        date: date,
-        page: groups.page,
-        position: groups.position,
-        text: text
-    }
+    parsed.text = noteLines.slice(3).join('\n')
 
     return parsed
 }

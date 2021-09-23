@@ -1,4 +1,4 @@
-import { parse, parseGermanDate, parseNoteLineBlock } from './Parser.js'
+import { parse, parseGermanDate, parseNoteLineBlock, parseEnglishLocationToken } from './Parser.js'
 
 function readFile(path) {
     var fs = require('fs');
@@ -7,13 +7,13 @@ function readFile(path) {
 }
 
 test('parse shouldn\'t fail on English', () => {
-    let data = readFile('samples/My Clippings.txt')
+    let data = readFile('src/samples/My Clippings.txt')
 
     parse(data)
 });
 
 test('parse shouldn\'t fail on German', () => {
-    let data = readFile('samples/Meine Clippings.txt')
+    let data = readFile('src/samples/Meine Clippings.txt')
 
     parse(data)
 });
@@ -50,4 +50,38 @@ test('parse yet another format of first line', () => {
     let note = parseNoteLineBlock(lines)
 
     expect(note.text).toBe("BELIEVE YOU CAN SUCCEED AND YOU WILL");
+});
+
+test('should not fail when cannot parse metadata', () => {
+    let lines = [
+        "The Magic of Thinking Big (David J. Schwartz)",
+        "this is bad metadata",
+        "",
+        "BELIEVE YOU CAN SUCCEED AND YOU WILL"
+    ]
+
+    let note = parseNoteLineBlock(lines)
+
+    expect(note.text).toBe("BELIEVE YOU CAN SUCCEED AND YOU WILL");
+});
+
+test('parseEnglishLocationToken: should parse both', () => {
+    let token = "Highlight Loc. 15622-23"
+    let result = parseEnglishLocationToken(token)
+
+    expect(result).toStrictEqual({ location_start: "15622", location_end: "23" });
+});
+
+test('parseEnglishLocationToken: should parse one', () => {
+    let token = "Highlight Loc. 15622"
+    let result = parseEnglishLocationToken(token)
+
+    expect(result).toStrictEqual({ location_start: "15622" });
+});
+
+test('parseEnglishLocationToken: should not crash for wrong token', () => {
+    let token = "Notiz Pos. 167"
+    let result = parseEnglishLocationToken(token)
+
+    expect(result).toStrictEqual({});
 });
