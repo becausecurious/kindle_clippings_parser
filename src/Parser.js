@@ -6,17 +6,16 @@ export const parse = (clippingsTxt) => {
 
     let notes = noteLineBlocks.map(parseNoteLineBlock)
 
-    let groupedNotes = groupBy(notes, "title")
+    let groupedNotes = groupBy(notes, "header")
 
     let books = Object.keys(groupedNotes).map(key => {
         let book_notes = groupedNotes[key]
         let note = book_notes[0]
 
-        let clean_book_notes = book_notes.map(({ title, author, ...keepAttrs }) => keepAttrs)
+        let clean_book_notes = book_notes.map(({ header, ...keepAttrs }) => keepAttrs)
 
         return {
-            title: note.title,
-            author: note.author,
+            header: note.header,
             notes: clean_book_notes
         }
     })
@@ -163,14 +162,14 @@ const mergeDicts = (a, b) => {
     return Object.assign({}, a, b)
 }
 
+const strip = (s) => {
+    return s.replace(/^\s+|\s+$/g, '')
+}
+
 export const parseNoteLineBlock = (noteLines) => {
     var parsed = {}
 
-    const FIRST_NOTE_LINE_REGEXP = /(?<title>.*) \((?<author>.*)\)/
-
-    let groups = noteLines[0].match(FIRST_NOTE_LINE_REGEXP).groups
-    parsed.title = groups.title
-    parsed.author = groups.author
+    parsed.header = strip(noteLines[0])
 
     parsed = mergeDicts(parsed, parseMetadataLine(noteLines[1]))
 

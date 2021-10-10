@@ -13,7 +13,7 @@ export class Books extends React.Component {
         let result = ""
 
         this.props.books.forEach(book => {
-            result += `"${book.title}" by ${book.author}\n\n`
+            result += `${book.header}\n\n`
             result += convertToString(book, this.props.showTime, this.props.showPosition)
             result += '\n\n\n'
         })
@@ -69,14 +69,14 @@ class Book extends React.Component {
         var blob = new Blob([conversationString],
             { type: "text/plain;charset=utf-8" });
 
-        saveAs(blob, `${this.props.book.title} notes.txt`)
+        saveAs(blob, `${this.props.book.header} notes.txt`)
     }
 
     render() {
         return (
             <div className="mt-5 is-flex is-justify-content-center is-align-items-center is-flex-direction-column">
                 <div className="mt-5 is-flex is-justify-content-center is-align-items-center">
-                    <b>"{this.props.book?.title}" by {this.props.book?.author}</b>
+                    <b>{this.props.book?.header}</b>
 
                     <button onClick={this.export} className="ml-3 button is-rounded is-info is-small">Download</button>
                 </div>

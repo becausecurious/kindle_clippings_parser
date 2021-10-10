@@ -43,7 +43,7 @@ class App extends React.Component {
           processedNotes: data
         })
       } catch (e) {
-        this.setState({ lastError: e })
+        this.setState({ lastError: e.toString() + " | " + e.stack })
       }
 
       this.setState({ isProcessing: false })
