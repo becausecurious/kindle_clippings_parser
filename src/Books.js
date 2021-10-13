@@ -2,6 +2,9 @@ import React from "react";
 import { saveAs } from 'file-saver';
 import dayjs from 'dayjs';
 
+
+const NEW_LINE = "\r\n";
+
 export class Books extends React.Component {
 
     constructor(props) {
@@ -13,9 +16,9 @@ export class Books extends React.Component {
         let result = ""
 
         this.props.books.forEach(book => {
-            result += `${book.header}\n\n`
+            result += `${book.header}` + NEW_LINE + NEW_LINE
             result += convertToString(book, this.props.showTime, this.props.showPosition)
-            result += '\n\n\n'
+            result += NEW_LINE + NEW_LINE + NEW_LINE
         })
 
         var blob = new Blob([result],
@@ -52,7 +55,7 @@ export class Books extends React.Component {
 function convertToString(book, showTime, showPosition) {
     return book?.notes.map(
         note => TxtNote(note, showTime, showPosition)
-    ).join('\n')
+    ).join(NEW_LINE)
 }
 
 class Book extends React.Component {
