@@ -1,9 +1,10 @@
 import React from "react";
 import { saveAs } from 'file-saver';
 import dayjs from 'dayjs';
+import os from 'os';
 
-
-const NEW_LINE = "\r\n";
+// https://stackoverflow.com/a/12989543
+const NEW_LINE = os.EOL;
 
 export class Books extends React.Component {
 
@@ -199,5 +200,5 @@ function TxtNote(note, showTime, showPosition) {
         additional = ` (${position_block}${separator}${time_block})`
     }
 
-    return `${note.text}${additional}`
+    return `${note.text.trim()}${additional}`
 }
