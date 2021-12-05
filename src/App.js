@@ -6,6 +6,7 @@ import { parse } from './Parser.js'
 
 import { Books } from './Books.js'
 import Checkbox from "./Checkbox.js";
+import DragAndDrop from './DragAndDrop';
 
 import sample_de from './samples/Meine Clippings.txt'
 import sample_en from './samples/My Clippings.txt'
@@ -15,7 +16,9 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.handleFile = this.handleFile.bind(this)
+    this.handleChosenFile = this.handleChosenFile.bind(this)
+    this.handleDrop = this.handleDrop.bind(this)
+    this.processOneFile = this.processOneFile.bind(this)
     this.reset = this.reset.bind(this)
 
     this.state = {
@@ -28,11 +31,10 @@ class App extends React.Component {
     }
   }
 
+  processOneFile(file) {
 
-  handleFile(e) {
     this.setState({ isProcessing: true, lastError: null })
 
-    e.preventDefault()
     const reader = new FileReader()
     reader.onload = async (e) => {
       const text = (e.target.result)
@@ -48,10 +50,25 @@ class App extends React.Component {
 
       this.setState({ isProcessing: false })
     };
-    const file = e.target.files[0]
     reader.readAsText(file)
 
     this.setState({ filename: file.name })
+  }
+
+  handleDrop(files) {
+    if (files.length > 1) {
+      alert("Sorry, please drop one file at a time.");
+    } else {
+      this.processOneFile(files[0])
+    }
+  }
+
+  handleChosenFile(e) {
+    e.preventDefault()
+
+    const file = e.target.files[0]
+
+    this.processOneFile(file)
   }
 
   reset() {
@@ -153,7 +170,7 @@ Resolve now to set aside some time each day (at least thirty minutes) to be comp
                   <li style={{ listStylePosition: "inside" }}>
                     <div className="is-inline-flex is-justify-content-center">
                       <label className="file-label">
-                        <input className="file-input" type="file" onChange={(e) => this.handleFile(e)} />
+                        <input className="file-input" type="file" onChange={(e) => this.handleChosenFile(e)} />
                         <span className={`button is-primary is-rounded ${this.state.isProcessing ? 'is-loading' : ''} `}>
                           <span className="file-label ">
                             Choose My Clippings.txt
@@ -161,6 +178,21 @@ Resolve now to set aside some time each day (at least thirty minutes) to be comp
                         </span>
                       </label>
                     </div>
+
+                    <div className="mt-4">
+                      <DragAndDrop handleDrop={this.handleDrop}>
+                        <div style={{ height: 100, width: 250 }} className="is-flex is-justify-content-center is-align-content-center is-flex-direction-column">
+                          <div style={{
+                            verticalAlign: "middle",
+                            display: "inline-block",
+                            height: "fit-content",
+                          }}>
+                            or drop your file here
+                          </div>
+                        </div>
+                      </DragAndDrop>
+                    </div>
+
                   </li>
                 </ol>
 
