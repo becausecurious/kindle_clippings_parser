@@ -1,10 +1,11 @@
 import dayjs from 'dayjs';
 
 export const parse = (clippingsTxt) => {
-
     let noteLineBlocks = splitIntoNoteLineBlocks(clippingsTxt)
 
     let notes = noteLineBlocks.map(parseNoteLineBlock)
+
+    notes = notes.filter((note) => !note.is_bookmark)
 
     let groupedNotes = groupBy(notes, "header")
 
@@ -37,7 +38,13 @@ function groupBy(objectArray, property) {
 function splitIntoNoteLineBlocks(clippingsTxt) {
     const SEPARATOR_LINE = "=========="
 
-    let lines = clippingsTxt.split("\n")
+
+    var lines;
+    if (clippingsTxt.indexOf("\n") > -1) {
+        lines = clippingsTxt.split("\n");
+    } else {
+        lines = clippingsTxt.split("\r");
+    }
 
     let blocks = []
 
@@ -95,6 +102,7 @@ export const parseEnglishLocationToken = (token) => {
     if (match.groups.location_end) {
         result.location_end = match.groups.location_end
     }
+    result.is_bookmark = token.indexOf("Bookmark") > -1
     return result
 }
 
@@ -108,6 +116,8 @@ export const parseGermanLocationToken = (token) => {
     if (match.groups.location_end) {
         result.location_end = match.groups.location_end
     }
+    // TODO: implement once i have an example.
+    result.is_bookmark = false;
     return result
 }
 

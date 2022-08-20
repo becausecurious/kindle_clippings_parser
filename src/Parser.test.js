@@ -69,14 +69,14 @@ test('parseEnglishLocationToken: should parse both', () => {
     let token = "Highlight Loc. 15622-23"
     let result = parseEnglishLocationToken(token)
 
-    expect(result).toStrictEqual({ location_start: "15622", location_end: "23" });
+    expect(result).toStrictEqual({ location_start: "15622", location_end: "23", is_bookmark: false });
 });
 
 test('parseEnglishLocationToken: should parse one', () => {
     let token = "Highlight Loc. 15622"
     let result = parseEnglishLocationToken(token)
 
-    expect(result).toStrictEqual({ location_start: "15622" });
+    expect(result).toStrictEqual({ location_start: "15622", is_bookmark: false });
 });
 
 test('parseEnglishLocationToken: should not crash for wrong token', () => {
@@ -84,4 +84,18 @@ test('parseEnglishLocationToken: should not crash for wrong token', () => {
     let result = parseEnglishLocationToken(token)
 
     expect(result).toStrictEqual({});
+});
+
+test('parseEnglishLocationToken: should handle "Your Highlight Location 492-494"', () => {
+    let token = "Your Highlight Location 492-494"
+    let result = parseEnglishLocationToken(token)
+
+    expect(result).toStrictEqual({ location_start: "492", location_end: "494", is_bookmark: false });
+});
+
+test('parseEnglishLocationToken: should handle bookmarks', () => {
+    let token = "Your Bookmark Location 492-494"
+    let result = parseEnglishLocationToken(token)
+
+    expect(result).toStrictEqual({ location_start: "492", location_end: "494", is_bookmark: true });
 });
