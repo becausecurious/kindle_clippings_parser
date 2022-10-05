@@ -18,7 +18,7 @@ export class Books extends React.Component {
 
         this.props.books.forEach(book => {
             result += `${book.header}` + NEW_LINE + NEW_LINE
-            result += convertToString(book, this.props.showTime, this.props.showPosition)
+            result += convertToString(book, this.props.showTime, this.props.showPosition, this.props.insertLineAfterNote)
             result += NEW_LINE + NEW_LINE + NEW_LINE
         })
 
@@ -42,7 +42,8 @@ export class Books extends React.Component {
                             <div className="conversation-block" >
                                 <Book book={book}
                                     showTime={this.props.showTime}
-                                    showPosition={this.props.showPosition} />
+                                    showPosition={this.props.showPosition}
+                                    insertLineAfterNote={this.props.insertLineAfterNote} />
                             </div>
                         )
                         )
@@ -53,10 +54,14 @@ export class Books extends React.Component {
     }
 }
 
-function convertToString(book, showTime, showPosition) {
+function convertToString(book, showTime, showPosition, insertLineAfterNote) {
+    var separator = NEW_LINE;
+    if (insertLineAfterNote) {
+        separator += NEW_LINE;
+    }
     return book?.notes.map(
         note => TxtNote(note, showTime, showPosition)
-    ).join(NEW_LINE)
+    ).join(separator)
 }
 
 class Book extends React.Component {
@@ -68,7 +73,7 @@ class Book extends React.Component {
 
     export() {
         let conversationString = convertToString(this.props.book,
-            this.props.showTime, this.props.showPosition)
+            this.props.showTime, this.props.showPosition, this.props.insertLineAfterNote)
 
         var blob = new Blob([conversationString],
             { type: "text/plain;charset=utf-8" });
@@ -93,6 +98,10 @@ class Book extends React.Component {
                                 <Note note={note}
                                     showTime={this.props.showTime}
                                     showPosition={this.props.showPosition} />
+                                {
+                                    this.props.insertLineAfterNote &&
+                                    <> <br></br> </>
+                                }
                             </div>
                         )
                         )

@@ -28,6 +28,7 @@ class App extends React.Component {
       filename: null,
       showTime: false,
       showPosition: false,
+      insertLineAfterNote: true,
     }
   }
 
@@ -251,11 +252,17 @@ Resolve now to set aside some time each day (at least thirty minutes) to be comp
               <span className="m-2">
                 {this.createStateCheckbox('time', "showTime")},
               </span>
-              {this.createStateCheckbox('position', "showPosition")}
+
+              <span className="m-2">
+                {this.createStateCheckbox('position', "showPosition")},
+              </span>
+
+              {this.createStateCheckbox('empty line after every note', "insertLineAfterNote")}
             </div>
             <Books books={this.state.processedNotes}
               showTime={this.state.showTime}
-              showPosition={this.state.showPosition} />
+              showPosition={this.state.showPosition}
+              insertLineAfterNote={this.state.insertLineAfterNote} />
           </>
         }
 
